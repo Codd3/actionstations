@@ -2,7 +2,8 @@ import time
 import os
 
 # simulation configuration
-GENERATIONS = 2
+GENERATIONS = 1000
+TIMEOUT = 0.1
 WORLD_CONFIG = "world.txt"
 
 # cell states
@@ -57,8 +58,16 @@ def compute_next_cycle(world):
 
             ### rule 2
             if n == 2 or n == 3 and world[i][j] == ALIVE:
-                world[i][j] = ALIVE
+                pass
 
+            ### rule 3
+            if n > 3 and world[i][j] == ALIVE:
+                world[i][j] = DIE
+
+            ### rule 4
+            if n == 3 and world[i][j] == DEAD:
+                world[i][j] = BORN
+            
             
 
 
@@ -96,7 +105,7 @@ def run(generations, world_config):
     for i in range(generations):
         print
         print "generation: %d" % i
-        time.sleep(0.25)
+        time.sleep(TIMEOUT)
         compute_next_cycle(world)
         print_world(world)
 
