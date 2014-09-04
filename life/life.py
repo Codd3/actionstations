@@ -2,7 +2,7 @@ import time
 import os
 
 # simulation configuration
-GENERATIONS = 20
+GENERATIONS = 2
 WORLD_CONFIG = "world.txt"
 
 # cell states
@@ -10,6 +10,7 @@ ALIVE = 'o'
 DEAD = '.'
 DIE = 'x'
 BORN = '*'
+EDGE = '+'
 
 
 def compute_next_cycle(world):
@@ -48,8 +49,29 @@ def compute_next_cycle(world):
             if on_the_edge(world, i, j) == True:
                 # skip if we are on the edge of the world
                 continue
-            # TODO
+            ###
+            
 
+
+def neighbors_alive(world, i, j):
+    cylon = 0 # number of neighbors alive(action stations!)
+    if world[i-1][j-1] == ALIVE:
+        cylon = cylon + 1
+    if world[i][j-1] == ALIVE:
+        cylon = cylon + 1
+    if world[i+1][j-1] == ALIVE:
+        cylon = cylon + 1
+    if world[i+1][j] == ALIVE:
+        cylon = cylon + 1
+    if world[i+1][j+1] == ALIVE:
+        cylon = cylon + 1
+    if world[i][j+1] == ALIVE:
+        cylon = cylon + 1
+    if world[i-1][j+1] == ALIVE:
+        cylon = cylon + 1
+    if world[i-1][j] == ALIVE:
+        cylon = cylon + 1
+    
 
 def run(generations, world_config):
     """
@@ -60,8 +82,9 @@ def run(generations, world_config):
       - world_config (filename): fie where initial world configurations is stored
     """
     world = get_world(world_config)
-
+    
     for i in range(generations):
+        print
         print "generation: %d" % i
         time.sleep(0.25)
         compute_next_cycle(world)
@@ -104,6 +127,8 @@ def print_world(world):
             if world[i][j] == BORN:
                 print DEAD,
                 world[i][j] = ALIVE
+            if world[i][j] == EDGE:
+                print EDGE,
         print
 
 
