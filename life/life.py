@@ -49,7 +49,16 @@ def compute_next_cycle(world):
             if on_the_edge(world, i, j) == True:
                 # skip if we are on the edge of the world
                 continue
-            ###
+            n = neighbors_alive(world, i, j)
+
+            ### rule 1
+            if n < 2 and world[i][j] == ALIVE:
+                world[i][j] = DIE
+
+            ### rule 2
+            if n == 2 or n == 3 and world[i][j] == ALIVE:
+                world[i][j] = ALIVE
+
             
 
 
@@ -71,6 +80,7 @@ def neighbors_alive(world, i, j):
         cylon = cylon + 1
     if world[i-1][j] == ALIVE:
         cylon = cylon + 1
+    return cylon
     
 
 def run(generations, world_config):
